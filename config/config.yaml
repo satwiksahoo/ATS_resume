@@ -1,0 +1,27 @@
+artifact_root : artifacts
+data_ingestion :
+   root_dir : artifacts/data_ingestion
+   data_source : cnamuangtoun/resume-job-description-fit
+
+data_transformation:
+   root_dir : artifacts/data_transformation
+   train_path : artifacts/data_ingestion/train.csv
+   test_path : artifacts/data_ingestion/test.csv
+   transformed_train_path : artifacts/data_transformation/train_dataset
+   transformed_test_path : artifacts/data_transformation/test_dataset
+   model_name  : distilbert-base-uncased
+   tokenizer_name : distilbert-base-uncased
+
+model_trainer:
+   root_dir : artifacts/model_trainer
+   transformed_train_path : artifacts/data_transformation/train_dataset
+   transformed_test_path : artifacts/data_transformation/test_dataset
+   trained_model_artifact_path : artifacts/model_trainer/model5
+   model_name  : sentence-transformers/multi-qa-mpnet-base-dot-v1  # distilbert-base-uncased
+   tokenizer_name : distilbert-base-uncased
+   model_pusher : artifacts/model_trainer/artifact_pusher
+   artifact_root : artifacts
+   
+
+
+

@@ -1,0 +1,5 @@
+.venv/
+/artifacts
+venv/
+logs
+uploads

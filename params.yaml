@@ -1,0 +1,44 @@
+# # key : 'value'
+
+# TrainingArguements:
+
+#     output_dir: "./results"
+#     eval_strategy : "epoch"          # evaluate each epoch
+#     save_strategy : "epoch"         # save best model each epoch
+#     learning_rate: 3e-5            # slightly higher than 2e-5 (good for smaller datasets)
+#     per_device_train_batch_size: 16 # larger batch = stabler gradient updates
+#     per_device_eval_batch_size: 16
+#     num_train_epochs: 8            # train a bit longer, but use early stopping
+#     weight_decay: 0.01              # keep small L2 regularization
+#     # logging_dir= "./logs"
+#     logging_steps: 20
+#     save_total_limit: 2             # keep only last 2 checkpoints
+#     # load_best_model_at_end:True    # reload best model based on metric
+#     metric_for_best_model: "f1"     # pick best model using F1 (good for imbalance)
+#     # greater_is_better:True
+#     warmup_ratio: 0.1               # gradual warmup → smoother start
+#     lr_scheduler_type: "cosine"     # cosine schedule → better convergence
+#     gradient_accumulation_steps: 2  # effective batch size = 16*2 = 32
+#     # fp16: True                      # if GPU supports mixed precision (saves memory)
+#     seed: 42                         # reproducibility
+
+
+TrainingArguments:
+  output_dir: "./results"
+  eval_strategy: "epoch"
+  save_strategy: "epoch"
+  learning_rate: 3e-5
+  per_device_train_batch_size: 16
+  per_device_eval_batch_size: 16
+  num_train_epochs: 8
+  weight_decay: 0.01
+  logging_steps: 20
+  save_total_limit: 2
+  load_best_model_at_end: true
+  metric_for_best_model: "f1"
+  greater_is_better: true
+  warmup_ratio: 0.1
+  lr_scheduler_type: "cosine"
+  gradient_accumulation_steps: 2
+  fp16: true
+  seed: 42
