@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 # from streamlit_extras.metric_cards import style_metric_cards
 # import streamlit as st
 # from streamlit_extras.progress_bar import radial_progress
-
+#added streamlit 
 st._config.set_option("server.address", "0.0.0.0")
 st._config.set_option("server.port", 8080)
 
