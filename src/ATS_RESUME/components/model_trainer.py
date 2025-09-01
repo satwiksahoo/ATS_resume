@@ -49,40 +49,40 @@ class ModelTrainer:
     def initiate_model_trainer(self):
         
         
-    #     train_file = os.path.join(self.config.transformed_train_path, "train.pkl")
-    #     test_file = os.path.join(self.config.transformed_test_path, "test.pkl")
+        train_file = os.path.join(self.config.transformed_train_path, "train.pkl")
+        test_file = os.path.join(self.config.transformed_test_path, "test.pkl")
         
-    #     with open(train_file, "rb") as f:
-    #       train_data = pickle.load(f)
+        with open(train_file, "rb") as f:
+          train_data = pickle.load(f)
 
-    #     with open(test_file, "rb") as f:
-    #        val_data = pickle.load(f)
+        with open(test_file, "rb") as f:
+           val_data = pickle.load(f)
 
-        
-        
-    #     train_dataloader = DataLoader(train_data, shuffle=True, batch_size=16)
-    #     test_dataloader = DataLoader(val_data, shuffle=False, batch_size=16)
-
-
-    #     model = SentenceTransformer(self.config.model_name)
-
-
-    #     train_loss = losses.CosineSimilarityLoss(model)
-
-    #     evaluator = evaluation.EmbeddingSimilarityEvaluator.from_input_examples(val_data, name="val")
-
-
-    #     model.fit(
-    # train_objectives=[(train_dataloader, train_loss)],
-    # evaluator=evaluator,
-    # epochs=6,
-    # warmup_steps=100,
-    # evaluation_steps=500,
-    # output_path= self.config.trained_model_artifact_path
-    # )
         
         
-    #     model.save_pretrained(self.config.model_pusher)
+        train_dataloader = DataLoader(train_data, shuffle=True, batch_size=16)
+        test_dataloader = DataLoader(val_data, shuffle=False, batch_size=16)
+
+
+        model = SentenceTransformer(self.config.model_name)
+
+
+        train_loss = losses.CosineSimilarityLoss(model)
+
+        evaluator = evaluation.EmbeddingSimilarityEvaluator.from_input_examples(val_data, name="val")
+
+
+        model.fit(
+    train_objectives=[(train_dataloader, train_loss)],
+    evaluator=evaluator,
+    epochs=6,
+    warmup_steps=100,
+    evaluation_steps=500,
+    output_path= self.config.trained_model_artifact_path
+    )
+        
+        
+        model.save_pretrained(self.config.model_pusher)
         
         self.sync_artifact_dir_to_s3()
         self.sync_saved_model_dir_from_s3()
