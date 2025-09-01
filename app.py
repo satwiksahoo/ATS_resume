@@ -8,6 +8,9 @@ import plotly.graph_objects as go
 # import streamlit as st
 # from streamlit_extras.progress_bar import radial_progress
 
+st._config.set_option("server.address", "0.0.0.0")
+st._config.set_option("server.port", 8080)
+
 @st.cache_resource
 def load_model():
     return SentenceTransformer("artifacts/model_trainer/model5")
