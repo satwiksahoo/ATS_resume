@@ -11,9 +11,35 @@ import plotly.graph_objects as go
 st._config.set_option("server.address", "0.0.0.0")
 st._config.set_option("server.port", 8080)
 
+
+import os
+import boto3
+
+def download_model_from_s3():
+    s3 = boto3.client("s3")
+    bucket = "resumeats1"
+    prefix = "artifacts/model_trainer/model5"
+
+    local_dir = "artifacts/model_trainer/model5"
+    os.makedirs(local_dir, exist_ok=True)
+
+    # download all files
+    for obj in s3.list_objects_v2(Bucket=bucket, Prefix=prefix)["Contents"]:
+        key = obj["Key"]
+        local_path = os.path.join(local_dir, os.path.relpath(key, prefix))
+        os.makedirs(os.path.dirname(local_path), exist_ok=True)
+        s3.download_file(bucket, key, local_path)
+
 @st.cache_resource
 def load_model():
+    if not os.path.exists("artifacts/model_trainer/model5"):
+        download_model_from_s3()
     return SentenceTransformer("artifacts/model_trainer/model5")
+
+
+# @st.cache_resource
+# def load_model():
+#     return SentenceTransformer("artifacts/model_trainer/model5")
 
 model = load_model()
 
