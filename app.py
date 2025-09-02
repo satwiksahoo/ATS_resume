@@ -7,14 +7,14 @@ import plotly.graph_objects as go
 # from streamlit_extras.metric_cards import style_metric_cards
 # import streamlit as st
 # from streamlit_extras.progress_bar import radial_progress
-#added streamlit 
+#added streamlit aws dfd
 st._config.set_option("server.address", "0.0.0.0")
 st._config.set_option("server.port", 8080)
 
 
 import os
 import boto3
-
+# s3 added
 def download_model_from_s3():
     s3 = boto3.client("s3")
     bucket = "resumeats1"
