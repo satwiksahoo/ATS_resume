@@ -24,7 +24,8 @@ class ModelTrainer:
 
         TRAINING_BUCKET_NAME = 'resumeats1'
         try:
-            aws_bucket_url = f"s3://{TRAINING_BUCKET_NAME}/artifacts/{datetime.now().timestamp()}"
+            # aws_bucket_url = f"s3://{TRAINING_BUCKET_NAME}/artifacts/{datetime.now().timestamp()}"
+            aws_bucket_url = f"s3://{TRAINING_BUCKET_NAME}/artifacts"
             
             self.s3_syncer.sync_folder_to_s3(folder = self.config.artifact_root  , aws_bucket_url=aws_bucket_url)
         
@@ -36,7 +37,8 @@ class ModelTrainer:
 
         TRAINING_BUCKET_NAME = 'resumeats1'
         try:
-            aws_bucket_url = f"s3://{TRAINING_BUCKET_NAME}/model5/{datetime.now().timestamp()}"
+            # aws_bucket_url = f"s3://{TRAINING_BUCKET_NAME}/model5/{datetime.now().timestamp()}"
+            aws_bucket_url = f"s3://{TRAINING_BUCKET_NAME}/model5"
             
             self.s3_syncer.sync_folder_to_s3(folder = self.config.model_pusher , aws_bucket_url=aws_bucket_url)
         

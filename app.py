@@ -18,21 +18,88 @@ import boto3
 def download_model_from_s3():
     s3 = boto3.client("s3")
     bucket = "resumeats1"
-    prefix = "artifacts/model_trainer/model5"
+    prefix = "model5/"
 
-    local_dir = "artifacts/model_trainer/model5"
+    # local dir matches prefix name
+    local_dir = os.path.join(os.getcwd(), prefix.strip("/"))
     os.makedirs(local_dir, exist_ok=True)
 
-    # download all files
-    for obj in s3.list_objects_v2(Bucket=bucket, Prefix=prefix)["Contents"]:
+    response = s3.list_objects_v2(Bucket=bucket, Prefix=prefix)
+    if "Contents" not in response:
+        print(f"⚠️ No files in {bucket}/{prefix}")
+        return
+
+    for obj in response["Contents"]:
         key = obj["Key"]
+        if key.endswith("/"):
+            continue
+
         local_path = os.path.join(local_dir, os.path.relpath(key, prefix))
         os.makedirs(os.path.dirname(local_path), exist_ok=True)
         s3.download_file(bucket, key, local_path)
+        print(f"⬇️ {key} → {local_path}")
 
+    print("✅ Done")
+    
+    
+    # s3 = boto3.client("s3")
+    # bucket = "resumeats1"
+    # prefix = "artifacts/model_trainer/model5"
+
+    # local_dir = "artifacts/model_trainer/model5"
+    # os.makedirs(local_dir, exist_ok=True)
+
+    # # download all files
+    # for obj in s3.list_objects_v2(Bucket=bucket, Prefix=prefix)['Contents']:
+    #     key = obj["Key"]
+    #     local_path = os.path.join(local_dir, os.path.relpath(key, prefix))
+    #     os.makedirs(os.path.dirname(local_path), exist_ok=True)
+    #     s3.download_file(bucket, key, local_path)
+
+
+
+
+
+# def download_from_s3(bucket, prefixes):
+#     """
+#     Download all files from multiple S3 prefixes into local folders.
+#     """
+#     s3 = boto3.client("s3")
+
+#     for prefix in prefixes:
+#         # local target folder (same structure as S3)
+#         local_dir = os.path.join(os.getcwd(), prefix.strip("/"))
+#         os.makedirs(local_dir, exist_ok=True)
+
+#         print(f"🔍 Looking for files in s3://{bucket}/{prefix}")
+
+#         response = s3.list_objects_v2(Bucket=bucket, Prefix=prefix)
+
+#         if "Contents" not in response:
+#             print(f"⚠️ No objects found in s3://{bucket}/{prefix}")
+#             continue
+
+#         for obj in response["Contents"]:
+#             key = obj["Key"]
+
+#             # skip "directories"
+#             if key.endswith("/"):
+#                 continue
+
+#             filename = os.path.basename(key)
+#             local_path = os.path.join(local_dir, filename)
+
+#             print(f"⬇️ Downloading {key} → {local_path}")
+#             s3.download_file(bucket, key, local_path)
+
+#     print("✅ Download complete.")
 @st.cache_resource
 def load_model():
     if not os.path.exists("artifacts/model_trainer/model5"):
+        bucket_name = "resumeats1"
+        prefixes = ["artifacts/", "model5/"]
+        # download_from_s3(bucket_name, prefixes)
+        
         download_model_from_s3()
     return SentenceTransformer("artifacts/model_trainer/model5")
 
