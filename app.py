@@ -14,7 +14,7 @@ st._config.set_option("server.port", 8080)
 
 import os
 import boto3
-# s3 added
+# s3 addedcv
 def download_model_from_s3():
     s3 = boto3.client("s3")
     bucket = "resumeats1"
