@@ -36,6 +36,7 @@ def load_model():
         download_model_from_s3()
     return SentenceTransformer("artifacts/model_trainer/model5")
 
+# git push --set-upstream origin main
 
 # @st.cache_resource
 # def load_model():
