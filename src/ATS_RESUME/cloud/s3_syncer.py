@@ -10,3 +10,5 @@ class s3_sync:
         command = f'aws s3 sync {aws_bucket_url} {folder}'
         os.system(command)
  
+ 
+ 
