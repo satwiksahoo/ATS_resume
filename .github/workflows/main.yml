@@ -66,51 +66,51 @@ jobs:
                 push: true
                 tags: ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
     
-    # Continous-deployement:
-    #     needs: build-and-push-ecr-image
-    #     runs-on: self-hosted
-    #     steps:
+    Continous-deployement:
+        needs: build-and-push-ecr-image
+        runs-on: self-hosted
+        steps:
 
-    #         - name: Free up disk space
-    #           run: |
-    #             echo "Before cleanup:"
-    #             df -h
-    #             sudo rm -rf /usr/share/dotnet || true
-    #             sudo rm -rf /opt/ghc || true
-    #             sudo rm -rf /usr/local/lib/android || true
-    #             sudo docker system prune -af || true
-    #             echo "After cleanup:"
-    #             df -h
-    #         - name: Checkout
-    #           uses: actions/checkout@v3
+            - name: Free up disk space
+              run: |
+                echo "Before cleanup:"
+                df -h
+                sudo rm -rf /usr/share/dotnet || true
+                sudo rm -rf /opt/ghc || true
+                sudo rm -rf /usr/local/lib/android || true
+                sudo docker system prune -af || true
+                echo "After cleanup:"
+                df -h
+            - name: Checkout
+              uses: actions/checkout@v3
             
-    #         - name: configure AWS credentials
-    #           uses: aws-actions/configure-aws-credentials@v1
-    #           with:
-    #             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #             aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-    #             aws-region: ${{secrets.AWS_REGION}}
+            - name: configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v1
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+                aws-region: ${{secrets.AWS_REGION}}
 
-    #         - name: Login to AWS ECR
-    #           id: login-ecr
-    #           uses: aws-actions/amazon-ecr-login@v1
+            - name: Login to AWS ECR
+              id: login-ecr
+              uses: aws-actions/amazon-ecr-login@v1
             
-    #         - name: pull latest image
-    #           run: |
-    #             docker pull ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+            - name: pull latest image
+              run: |
+                docker pull ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
             
-    #         - name: run docker image to serve users
-    #           run: |
-    #             docker rm -f atsresume || true
-    #             docker run -d --name=atsresume -p 8080:8080 --ipc=host \
-    #             -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
-    #             -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
-    #             -e AWS_REGION=${{ secrets.AWS_REGION }} \
-    #             ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+            - name: run docker image to serve users
+              run: |
+                docker rm -f atsresume || true
+                docker run -d --name=atsresume -p 8080:8080 --ipc=host \
+                -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
+                -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
+                -e AWS_REGION=${{ secrets.AWS_REGION }} \
+                ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
 
-    #         - name: clean previous images and containers
-    #           run: |
-    #             docker system prune -f
+            - name: clean previous images and containers
+              run: |
+                docker system prune -f
                 
 
 #sdvsdv
