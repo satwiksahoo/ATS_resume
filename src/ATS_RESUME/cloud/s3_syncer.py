@@ -11,4 +11,3 @@ class s3_sync:
         os.system(command)
  
  
- 
