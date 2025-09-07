@@ -110,7 +110,7 @@ def load_model():
 #     return SentenceTransformer("artifacts/model_trainer/model5")
 
 # model = load_model()
-model = SentenceTransformer('sentence-transformers/multi-qa-mpnet-base-dot-v1')
+model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
 st.set_page_config(page_title="ATS Resume Scorer", page_icon="📄", layout="centered")
 
